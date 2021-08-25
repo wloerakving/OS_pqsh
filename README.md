@@ -14,9 +14,9 @@ approach implementing [Project 01].
 
 ### Process
 
-1. Given a command string such as `sleep 10`, how would start a process that
-   executes this command?  In particular, how would you handle the name of the
-   program (ie. `sleep`) versus the arguments to the program (ie. `10`)?
+1. Given a command string such as `sleep 10`, how would you start a process
+   that executes this command?  In particular, how would you handle the name of
+   the program (ie. `sleep`) versus the arguments to the program (ie. `10`)?
 
 2. What signals do you need to send to a process to **pause** it (ie. suspend
    its execution) or to **resume** it (ie. continue its execution)?
