@@ -53,8 +53,8 @@ approach implementing [Project 01].
 
 ### Timestamp
 
-1. How would you the result of `gettimeofday` to return a `double` representing
-   the current time in **seconds**?
+1. How would you use the result of `gettimeofday` to return a `double`
+   representing the current time in **seconds**?
 
 ## Errata
 
