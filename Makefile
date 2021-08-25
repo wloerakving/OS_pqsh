@@ -51,15 +51,19 @@ test-all:	test-units test-scripts
 test-units:	$(TEST_UNITS)
 
 test_%:		bin/test_%
-	@printf "\nTesting $@\n"
+	@printf "Testing %-20s ... " $@
+	@failures=0
 	@for i in $$(seq 0 $$($< 2>&1 | tail -n 1 | awk '{print $$1}')); do \
-	    $< $$i || exit 1;	\
+	    if ! $< $$i > tests/$@.log 2>&1; then \
+	    	echo "FAILURE"; echo; cat tests/$@.log; echo; exit 1; \
+	    fi \
 	done
+	@echo "SUCCESS"
 
 test-scripts:	$(TEST_SCRIPTS)
 
 test_%:		tests/test_%.sh
-	@printf "\nTesting $@ ...\n"
+	@printf "\nTesting %-20s ...\n" $@
 	@./tests/$@.sh
 
 clean:
