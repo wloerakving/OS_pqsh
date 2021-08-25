@@ -49,7 +49,7 @@ if [ ! -x bin/pqsh ]; then
     exit 1
 fi
 
-echo -n "Running PQSH commands ... "
+echo -n "  Running PQSH commands      ... "
 if pqsh_test_commands | valgrind --leak-check=full bin/pqsh -p fifo -n 2 > $LOGFILE 2> $LOGFILE.valgrind; then
     echo "SUCCESS"
 else
@@ -57,7 +57,7 @@ else
     exit 2
 fi
 
-echo -n "Verifying PQSH output ... "
+echo -n "  Verifying PQSH output      ... "
 if pqsh_check_output; then
     echo "SUCCESS"
 else
@@ -65,7 +65,7 @@ else
     exit 3
 fi
 
-echo -n "Verifying PQSH memory ... "
+echo -n "  Verifying PQSH memory      ... "
 if [ $(awk '/ERROR SUMMARY:/ {print $4}' $LOGFILE.valgrind) -eq 0 ]; then
     echo "SUCCESS"
 else
