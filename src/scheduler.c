@@ -23,8 +23,9 @@ void scheduler_add(Scheduler *s, FILE *fs, const char *command) {
  * @param   fs      File stream to write to.
  * @param   queue   Bitmask specifying which queues to display.
  **/
-void scheduler_status(Scheduler *s, FILE *fs, int queue) {
-    fprintf(fs, "Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n");
+void scheduler_status(Scheduler *s, int queue) {
+    printf("Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n",
+		    0, 0, 0, 0.0, 0.0);
     /* TODO: Complement implementation. */
 }
 

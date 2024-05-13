@@ -27,6 +27,12 @@ void help() {
     printf("  exit|quit         Exit shell.\n");
 }
 
+/* Status Command */
+
+void status(Scheduler *s) {
+    scheduler_status(s, 0);
+}
+
 /* Main Execution */
 
 int main(int argc, char *argv[]) {
@@ -54,7 +60,9 @@ int main(int argc, char *argv[]) {
             help();
         } else if (streq(command, "exit") || streq(command, "quit")) {
             break;
-        } else if (strlen(command)) {
+        } else if (streq(command, "status")) {
+	    status(s);
+	} else if (strlen(command)) {
             printf("Unknown command: %s\n", command);
         }
     }
