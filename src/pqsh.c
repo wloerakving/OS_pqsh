@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/time.h>
+#include <ctype.h>
 
 /* Global Variables */
 
@@ -27,10 +28,24 @@ void help() {
     printf("  exit|quit         Exit shell.\n");
 }
 
-/* Status Command */
+/* Add Worksim Command*/
+void add(Scheduler *s, char arg[]) {
+    scheduler_add(s, arg);
+}
 
-void status(Scheduler *s) {
-    scheduler_status(s, 0);
+/* Status Command */
+void status(Scheduler *s, char arg[]) {
+    
+    int queue = 0;
+    
+    if (streq(arg, "running"))
+        queue = RUNNING;
+    else if (streq(arg, "finished"))
+        queue = FINISHED;
+    else if (streq(arg, "waiting"))
+	queue = WAITING;
+
+    scheduler_status(s, queue);
 }
 
 /* Main Execution */
@@ -52,7 +67,7 @@ int main(int argc, char *argv[]) {
         printf("\nPQSH> ");
 
         while (!fgets(command, BUFSIZ, stdin) && !feof(stdin));
-
+	
         chomp(command);
         
         /* TODO: Handle add and status commands */
@@ -60,8 +75,12 @@ int main(int argc, char *argv[]) {
             help();
         } else if (streq(command, "exit") || streq(command, "quit")) {
             break;
-        } else if (streq(command, "status")) {
-	    status(s);
+        } else if (!strncmp(command, "status", 6)) {
+		strcpy(argument, &command[6]);
+		status(s, argument);
+	} else if (!strncmp(command, "add worksim", 11)) {
+                strcpy(argument, &command[11]);
+		add(s, argument);
 	} else if (strlen(command)) {
             printf("Unknown command: %s\n", command);
         }

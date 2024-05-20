@@ -40,7 +40,7 @@ struct Scheduler {
 
 /* Commands */
 
-void    scheduler_add(Scheduler *s, FILE *fs, const char *command);
+void    scheduler_add(Scheduler *s, const char *command);
 void    scheduler_status(Scheduler *s, int queue);
 
 /* Functions */

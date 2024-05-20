@@ -13,7 +13,7 @@
  * @param   fs      File stream to write to.
  * @param   command Command string for new Process.
  **/
-void scheduler_add(Scheduler *s, FILE *fs, const char *command) {
+void scheduler_add(Scheduler *s, const char *command) { // File *fs
     /* TODO: Implement */
 }
 
@@ -26,7 +26,7 @@ void scheduler_add(Scheduler *s, FILE *fs, const char *command) {
 void scheduler_status(Scheduler *s, int queue) {
     printf("Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n",
 		    0, 0, 0, 0.0, 0.0);
-    /* TODO: Complement implementation. */
+	  /* TODO: Complement implementation. */
 }
 
 /**
