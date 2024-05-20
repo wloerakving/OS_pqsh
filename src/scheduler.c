@@ -10,11 +10,13 @@
 /**
  * Add new command to waiting queue.
  * @param   s	    Pointer to Scheduler structure.
- * @param   fs      File stream to write to.
+ * @param   fs      File stream to write to. (File *fs)
  * @param   command Command string for new Process.
  **/
-void scheduler_add(Scheduler *s, const char *command) { // File *fs
-    /* TODO: Implement */
+void scheduler_add(Scheduler *s, const char *command) {
+    Process *process = process_create(command);
+    queue_push(&s->waiting, process);    
+    printf("Added process \"bin/worksim%s\" to waiting queue.", command);
 }
 
 /**
@@ -25,7 +27,7 @@ void scheduler_add(Scheduler *s, const char *command) { // File *fs
  **/
 void scheduler_status(Scheduler *s, int queue) {
     printf("Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n",
-		    0, 0, 0, 0.0, 0.0);
+		    0, s->waiting.size, 0, 0.0, 0.0);
 	  /* TODO: Complement implementation. */
 }
 

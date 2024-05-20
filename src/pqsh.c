@@ -70,16 +70,16 @@ int main(int argc, char *argv[]) {
 	
         chomp(command);
         
-        /* TODO: Handle add and status commands */
+        /* Handle add and status commands */
         if (streq(command, "help")) {
             help();
         } else if (streq(command, "exit") || streq(command, "quit")) {
             break;
         } else if (!strncmp(command, "status", 6)) {
-		strcpy(argument, &command[6]);
+		strcpy(argument, &command[7]);
 		status(s, argument);
-	} else if (!strncmp(command, "add worksim", 11)) {
-                strcpy(argument, &command[11]);
+	} else if (!strncmp(command, "add bin/worksim", 14)) {
+                strcpy(argument, &command[4]);
 		add(s, argument);
 	} else if (strlen(command)) {
             printf("Unknown command: %s\n", command);

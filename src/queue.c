@@ -11,6 +11,16 @@
  **/
 void        queue_push(Queue *q, Process *p) {
     /* TODO: Implement */
+    if (q->size == 0) {
+        q->tail = p;
+	q->head = p;
+    } else {
+	p->next = q->tail;
+	q->tail = p;
+    }
+    q->size++;
+    // arrival_time
+
 }
 
 /**

@@ -16,8 +16,35 @@
  * @return  Pointer to new process structure
  **/
 Process *process_create(const char *command) {
-    /* TODO: Implement */
-    return NULL;
+    // Alocate memory for a new process structure
+    Process *p = (Process *)malloc(sizeof(Process));
+    if (!p) {
+        perror("Malloc failed!");
+	return NULL;
+    }
+    // Duplicated the command string and store it in the process structre
+    strcpy(p->command, command);
+    // Fork a new process from parrent process
+    pid_t pid = fork();
+    if (pid < 0) {
+        perror("Error occured, fork failed!");
+	free(p);
+	return NULL;
+    } 
+    else if (!pid) {
+        char *argv[MAX_ARGUMENTS] = {0};
+	int i = 0;
+	for (char *token = strtok(command, " "); token; token = strtok(NULL, " "))
+	    argv[i++] = token;
+        execvp(argv[0], argv);
+	perror("Execvp failed!");
+	exit(EXIT_FAILURE);
+    } 
+    else {
+	p->pid = pid;
+        timestamp();
+    }
+    return p;
 }
 
 /**
