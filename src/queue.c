@@ -15,7 +15,7 @@ void        queue_push(Queue *q, Process *p) {
         q->tail = p;
 	q->head = p;
     } else {
-	p->next = q->tail;
+	p->next = q->tail->next;
 	q->tail = p;
     }
     q->size++;
@@ -30,7 +30,7 @@ void        queue_push(Queue *q, Process *p) {
  **/
 Process *   queue_pop(Queue *q) {
     /* TODO: Implement */
-    return NULL;
+        return NULL; // Return NULL if the queue is empty
 }
 
 /**

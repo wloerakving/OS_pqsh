@@ -14,9 +14,10 @@
  * @param   command Command string for new Process.
  **/
 void scheduler_add(Scheduler *s, const char *command) {
+
     Process *process = process_create(command);
     queue_push(&s->waiting, process);    
-    printf("Added process \"bin/worksim%s\" to waiting queue.", command);
+    printf("Added process \"bin/worksim%s\" to waiting queue.\n", command);
 }
 
 /**
@@ -26,9 +27,10 @@ void scheduler_add(Scheduler *s, const char *command) {
  * @param   queue   Bitmask specifying which queues to display.
  **/
 void scheduler_status(Scheduler *s, int queue) {
+
     printf("Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n",
 		    0, s->waiting.size, 0, 0.0, 0.0);
-	  /* TODO: Complement implementation. */
+    /* TODO: Complement implementation. */
 }
 
 /**
@@ -36,7 +38,19 @@ void scheduler_status(Scheduler *s, int queue) {
  * @param   s	    Pointer to Scheduler structure.
  **/
 void scheduler_next(Scheduler *s) {
-    /* TODO: Dispatch to appropriate scheduler function. */
+
+    /* Dispatch to appropriate scheduler function. */
+    switch (s->policy) {
+    case FIFO_POLICY:
+         scheduler_fifo(s);
+         break;
+    case RDRN_POLICY:
+         scheduler_rdrn(s);
+         break;
+    default:
+         perror("Unknown scheduling policy\n");
+         break;
+    }
 }
 
 /**

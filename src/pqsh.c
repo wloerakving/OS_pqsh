@@ -53,13 +53,14 @@ void status(Scheduler *s, char arg[]) {
 int main(int argc, char *argv[]) {
     Scheduler *s = &PQShellScheduler;
 
-    /* TODO: Parse command line options */
+    /* Parse command line options */
 
     /* TODO: Register signal handlers */
-
+    signal_register(SIGALRM, 0, sigalrm_handler);
+    
     /* TODO: Start timer interrupt */
 
-    /* TODO: Process shell comands */
+    /* Process shell comands */
     while (!feof(stdin)) {
         char command[BUFSIZ]  = "";
         char argument[BUFSIZ] = "";

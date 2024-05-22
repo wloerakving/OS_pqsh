@@ -15,8 +15,14 @@
  * @return  Double representing the current time.
  **/
 double timestamp() {
-    /* TODO: Implement */
-    return 0;
+    /* Implement */
+    struct timeval tv;
+    if (gettimeofday(&tv, NULL) == 0) {
+         return tv.tv_sec + tv.tv_usec / (double)1e6;
+    } else {
+        time_t t = time(NULL);
+	return (double)t;
+    }
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */
