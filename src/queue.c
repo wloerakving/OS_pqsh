@@ -10,12 +10,12 @@
  * @param q     Pointer to Queue structure.
  **/
 void        queue_push(Queue *q, Process *p) {
-    /* TODO: Implement */
+    /* Implement */
     if (q->size == 0) {
         q->tail = p;
 	q->head = p;
     } else {
-	p->next = q->tail->next;
+	q->tail->next = p;
 	q->tail = p;
     }
     q->size++;
@@ -29,7 +29,14 @@ void        queue_push(Queue *q, Process *p) {
  * @return  Process from front of queue.
  **/
 Process *   queue_pop(Queue *q) {
-    /* TODO: Implement */
+    /* Implement */
+	Process * tmp = q->head;
+	if (q->size > 0) {
+            q->head = q->head->next; 
+            q->size--;
+	    return tmp;
+        }	    
+
         return NULL; // Return NULL if the queue is empty
 }
 
@@ -40,8 +47,15 @@ Process *   queue_pop(Queue *q) {
  * @return  Process from Queue with specified pid.
  **/
 Process *   queue_remove(Queue *q, pid_t pid) {
-    /* TODO: Implement */
-    return NULL;
+    /* Implement */
+    Process * tmp = q->head;
+    Process * toremove;
+    while (tmp->next->pid != pid) {
+        continue;
+    }
+    toremove = tmp->next;
+    tmp->next = tmp->next->next;
+    return toremove;
 }
 
 /**
@@ -49,10 +63,10 @@ Process *   queue_remove(Queue *q, pid_t pid) {
  * @param q     Queue structure.
  * @param fs    Output file stream.
  **/
-void        queue_dump(Queue *q, FILE *fs) {
-    fprintf(fs, "%6s %-30s %-13s %-13s %-13s\n", 
-                "PID", "COMMAND", "ARRIVAL", "START", "END");
-    /* TODO: Display information for each item in Queue. */
+void        queue_dump(Queue *q) {
+    printf("%6s %-30s %-13s %-13s %-13s\n", 
+                "PID", "COMMAND", "ARRIVAL", "START", "END"); 
+    /* TODO Display information for each item in Queue. */
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

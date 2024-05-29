@@ -9,6 +9,7 @@
 #include <string.h>
 #include <sys/time.h>
 #include <ctype.h>
+#include <unistd.h>
 
 /* Global Variables */
 
@@ -53,13 +54,23 @@ void status(Scheduler *s, char arg[]) {
 int main(int argc, char *argv[]) {
     Scheduler *s = &PQShellScheduler;
 
-    /* Parse command line options */
+    /* TODO: Parse command line options */
 
-    /* TODO: Register signal handlers */
+    /* Register signal handlers */
     signal_register(SIGALRM, 0, sigalrm_handler);
     
-    /* TODO: Start timer interrupt */
+    /* Start timer interrupt */
+    struct itimerval timer;
 
+    timer.it_value.tv_sec = 1;
+    timer.it_value.tv_usec = 0;
+    timer.it_interval.tv_sec = 1;
+    timer.it_interval.tv_usec = 0;
+    
+    if (setitimer(ITIMER_REAL, &timer, NULL) == -1) {
+        perror("setitimer");
+	exit(EXIT_FAILURE);
+    }
     /* Process shell comands */
     while (!feof(stdin)) {
         char command[BUFSIZ]  = "";
@@ -85,6 +96,8 @@ int main(int argc, char *argv[]) {
 	} else if (strlen(command)) {
             printf("Unknown command: %s\n", command);
         }
+	// Suspend a program until a signal is caught
+        pause();
     }
 
     return EXIT_SUCCESS;
