@@ -18,7 +18,11 @@ void scheduler_fifo(Scheduler *s) {
     /* TODO: Implement FIFO Policy */
     while (s->running.size <= s->cores && s->waiting.size > 0) {
 	Process *poped = queue_pop(&s->waiting);
+    if (poped) {
+        // Start the process
+        process_start(poped);
         queue_push(&s->running, poped);
+    }
     }
 }
 
