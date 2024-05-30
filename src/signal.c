@@ -33,8 +33,12 @@ bool signal_register(int signum, int flags, sighandler_t handler) {
  * SIGALRM handler.
  * @param   signum      Signal number.
  **/
+extern Scheduler PQShellScheduler;
 void sigalrm_handler(int signum) {
     /* TODO: Handle timer event. */
+    Scheduler *s = &PQShellScheduler; 
+    scheduler_wait(s);
+    scheduler_next(s);
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

@@ -54,7 +54,9 @@ Process *process_create(const char *command) {
  **/
 bool process_start(Process *p) {
     /* TODO: Implement */
-    return false;
+    p->start_time = timestamp();
+    return kill(p->pid, SIGCONT) == 0;
+    // return false;
 }
 
 /**
@@ -64,7 +66,8 @@ bool process_start(Process *p) {
  **/
 bool process_pause(Process *p) {
     /* TODO: Implement */
-    return false;
+    return kill(p->pid, SIGSTOP) == 0;
+    // return false;
 }
 
 /**
@@ -74,7 +77,8 @@ bool process_pause(Process *p) {
  **/
 bool process_resume(Process *p) {
     /* TODO: Implement */
-    return false;
+    return kill(p->pid, SIGCONT) == 0;
+    // return false;
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

@@ -47,15 +47,36 @@ Process *   queue_pop(Queue *q) {
  * @return  Process from Queue with specified pid.
  **/
 Process *   queue_remove(Queue *q, pid_t pid) {
-    /* Implement */
-    Process * tmp = q->head;
-    Process * toremove;
-    while (tmp->next->pid != pid) {
-        continue;
+    // /* Implement */
+    // Process * tmp = q->head;
+    // Process * toremove;
+    // while (tmp->next->pid != pid) {
+    //     continue;
+    // }
+    // toremove = tmp->next;
+    // tmp->next = tmp->next->next;
+    // return toremove;
+    if (q->size == 0) return NULL;
+
+    Process *prev = NULL;
+    Process *current = q->head;
+    while (current != NULL) {
+        if (current->pid == pid) {
+            if (prev == NULL) {
+                q->head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            if (current == q->tail) {
+                q->tail = prev;
+            }
+            q->size--;
+            return current;
+        }
+        prev = current;
+        current = current->next;
     }
-    toremove = tmp->next;
-    tmp->next = tmp->next->next;
-    return toremove;
+    return NULL;
 }
 
 /**
@@ -64,9 +85,15 @@ Process *   queue_remove(Queue *q, pid_t pid) {
  * @param fs    Output file stream.
  **/
 void        queue_dump(Queue *q) {
-    printf("%6s %-30s %-13s %-13s %-13s\n", 
-                "PID", "COMMAND", "ARRIVAL", "START", "END"); 
+    // printf("%6s %-30s %-13s %-13s %-13s\n", 
+    //             "PID", "COMMAND", "ARRIVAL", "START", "END"); 
     /* TODO Display information for each item in Queue. */
+    Process *current = q->head;
+    while (current != NULL) {
+        printf("%6d %-30s %-13.6lf %-13.6lf %-13.6lf\n",
+            current->pid, current->command, current->arrival_time, current->start_time, current->end_time);
+        current = current->next;
+    }
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */
