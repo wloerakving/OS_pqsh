@@ -42,7 +42,6 @@ Process *process_create(const char *command) {
     } 
     else {
 	p->pid = pid;
-        timestamp();
     }
     return p;
 }
@@ -53,10 +52,8 @@ Process *process_create(const char *command) {
  * @return  Whether or not starting the process was successful
  **/
 bool process_start(Process *p) {
-    /* TODO: Implement */
     p->start_time = timestamp();
     return kill(p->pid, SIGCONT) == 0;
-    // return false;
 }
 
 /**
@@ -65,9 +62,7 @@ bool process_start(Process *p) {
  * @return  Whether or not sending the signal was successful.
  **/
 bool process_pause(Process *p) {
-    /* TODO: Implement */
     return kill(p->pid, SIGSTOP) == 0;
-    // return false;
 }
 
 /**
@@ -76,9 +71,7 @@ bool process_pause(Process *p) {
  * @return  Whether or not sending the signal was successful.
  **/
 bool process_resume(Process *p) {
-    /* TODO: Implement */
     return kill(p->pid, SIGCONT) == 0;
-    // return false;
 }
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

@@ -45,7 +45,6 @@ void status(Scheduler *s, char arg[]) {
         queue = FINISHED;
     else if (streq(arg, "waiting"))
 	queue = WAITING;
-
     scheduler_status(s, queue);
 }
 
@@ -54,7 +53,10 @@ void status(Scheduler *s, char arg[]) {
 int main(int argc, char *argv[]) {
     Scheduler *s = &PQShellScheduler;
 
-    /* TODO: Parse command line options */
+    /* Parse command line options */
+    if (!parse_command_line_options(argc, argv, s)) {
+        EXIT_FAILURE;
+    }
 
     /* Register signal handlers */
     signal_register(SIGALRM, 0, sigalrm_handler);
@@ -87,7 +89,7 @@ int main(int argc, char *argv[]) {
             help();
         } else if (streq(command, "exit") || streq(command, "quit")) {
             break;
-        } else if (!strncmp(command, "status", 6)) {
+        } else if (!strncmp(command, "status", 5)) {
 		strcpy(argument, &command[7]);
 		status(s, argument);
 	} else if (!strncmp(command, "add bin/worksim", 14)) {
@@ -97,7 +99,7 @@ int main(int argc, char *argv[]) {
             printf("Unknown command: %s\n", command);
         }
 	// Suspend a program until a signal is caught
-        pause();
+        // pause();
     }
 
     return EXIT_SUCCESS;

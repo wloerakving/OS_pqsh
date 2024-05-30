@@ -10,7 +10,6 @@
  * @param q     Pointer to Queue structure.
  **/
 void        queue_push(Queue *q, Process *p) {
-    /* Implement */
     if (q->size == 0) {
         q->tail = p;
 	q->head = p;
@@ -19,7 +18,6 @@ void        queue_push(Queue *q, Process *p) {
 	q->tail = p;
     }
     q->size++;
-    // arrival_time
 
 }
 
@@ -29,7 +27,6 @@ void        queue_push(Queue *q, Process *p) {
  * @return  Process from front of queue.
  **/
 Process *   queue_pop(Queue *q) {
-    /* Implement */
 	Process * tmp = q->head;
 	if (q->size > 0) {
             q->head = q->head->next; 
@@ -37,7 +34,7 @@ Process *   queue_pop(Queue *q) {
 	    return tmp;
         }	    
 
-        return NULL; // Return NULL if the queue is empty
+        return NULL;
 }
 
 /**
@@ -47,15 +44,6 @@ Process *   queue_pop(Queue *q) {
  * @return  Process from Queue with specified pid.
  **/
 Process *   queue_remove(Queue *q, pid_t pid) {
-    // /* Implement */
-    // Process * tmp = q->head;
-    // Process * toremove;
-    // while (tmp->next->pid != pid) {
-    //     continue;
-    // }
-    // toremove = tmp->next;
-    // tmp->next = tmp->next->next;
-    // return toremove;
     if (q->size == 0) return NULL;
 
     Process *prev = NULL;
@@ -85,14 +73,15 @@ Process *   queue_remove(Queue *q, pid_t pid) {
  * @param fs    Output file stream.
  **/
 void        queue_dump(Queue *q) {
-    // printf("%6s %-30s %-13s %-13s %-13s\n", 
-    //             "PID", "COMMAND", "ARRIVAL", "START", "END"); 
-    /* TODO Display information for each item in Queue. */
+    /* Display information for each item in Queue. */
     Process *current = q->head;
     while (current != NULL) {
+
+        printf("%6s %-30s %-18.6s %-8.6s %13.6s\n", "PID", " COMMAND", "ARRIVAL", "START", "END");
         printf("%6d %-30s %-13.6lf %-13.6lf %-13.6lf\n",
             current->pid, current->command, current->arrival_time, current->start_time, current->end_time);
-        current = current->next;
+        
+	current = current->next;
     }
 }
 
