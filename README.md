@@ -67,3 +67,5 @@ Timestamp utilities provide precise measurements of process start, stop, and dur
 ## Testing 
 The tests/ directory contains unit tests and scripts to validate the functionality of the scheduler. <br>
 The tests ensure that each component works correctly and that the scheduling policies produce the expected results. 
+
+## Example result
