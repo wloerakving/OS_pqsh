@@ -11,7 +11,7 @@ ARFLAGS		= rcs
 
 LIBRARY_HEADERS = $(wildcard include/pq/*.h)
 LIBRARY_SOURCES = src/options.c src/process.c src/queue.c src/signal.c \
-		  src/scheduler.c src/scheduler_fifo.c src/scheduler_rdrn.c \
+		  src/scheduler.c src/scheduler_fifo.c src/scheduler_rdrn.c src/scheduler_sjf.c \
 		  src/timestamp.c
 LIBRARY_OBJECTS	= $(LIBRARY_SOURCES:.c=.o)
 STATIC_LIBRARY  = lib/libpqsh.a

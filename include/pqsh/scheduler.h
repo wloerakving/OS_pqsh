@@ -12,6 +12,7 @@
 typedef enum {
     FIFO_POLICY,        /* First in, first out */
     RDRN_POLICY,        /* Round robin */
+    SJF_POLICY,         /* Shortest job first */
 } Policy;
 
 enum {
@@ -52,7 +53,7 @@ void    scheduler_wait(Scheduler *s);
 
 void    scheduler_fifo(Scheduler *s);
 void    scheduler_rdrn(Scheduler *s);
-
+void    scheduler_sjf(Scheduler *s);
 #endif
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

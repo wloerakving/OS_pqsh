@@ -40,7 +40,9 @@ bool parse_command_line_options(int argc, char *argv[], Scheduler *s) {
 	            s->policy = FIFO_POLICY;
                 } else if (streq(opt, "rdrn")) {
 	            s->policy = RDRN_POLICY;
-                } else {
+                } else if (streq(opt, "sjf")) {
+		    s->policy = SJF_POLICY;
+		} else {
                     fprintf(stderr, "Unknown policy: %s\n", opt);
                     return false;
                 }

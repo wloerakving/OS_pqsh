@@ -61,6 +61,9 @@ void scheduler_next(Scheduler *s) {
     case RDRN_POLICY:
          scheduler_rdrn(s);
          break;
+    case SJF_POLICY:
+         scheduler_sjf(s);
+         break;
     default:
          perror("Unknown scheduling policy\n");
          break;
