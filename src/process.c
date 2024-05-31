@@ -9,6 +9,7 @@
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 /**
  * Create new process structure given command.
@@ -80,5 +81,19 @@ bool process_resume(Process *p) {
     return kill(p->pid, SIGCONT) == 0;
     // return false;
 }
-
+bool process_is_finished(Process *p) {
+    int status;
+    pid_t result = waitpid(p->pid, &status, WNOHANG);
+    if (result == 0) {
+        // Process is still running
+        return false;
+    } else if (result == -1) {
+        // Error occurred
+        perror("waitpid");
+        return false;
+    } else {
+        // Process has finished
+        return true;
+    }
+}
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

@@ -23,7 +23,7 @@ void        queue_push(Queue *q, Process *p);
 Process *   queue_pop(Queue *q);
 Process *   queue_remove(Queue *q, pid_t pid);
 void        queue_dump(Queue *q);
-
+Process     *queue_get(Queue *q, int index);
 #endif
 
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

@@ -82,26 +82,26 @@ void scheduler_wait(Scheduler *s) {
      **/
     int status;
     pid_t pid;
-
+    // printf("in the wait sheduler");
     // Wait for any child process to change state without blocking
     while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
         if (WIFEXITED(status) || WIFSIGNALED(status)) {
             // Remove the process from the running queue and update metrics
-\            Process *process = queue_remove(&s->running, pid);
-            if (process == NULL)
-            {
-                printf("Running queue is empty");
-            }
+            Process *process = queue_remove(&s->running, pid);
+            // if (process == NULL)
+            // {
+            //     printf("Running queue is empty");
+            // }
             if (process) {
-                printf('hi');
+                // printf('hi');
                 process->end_time = timestamp();
                 // Calculate metrics
                 s->total_turnaround_time += process->end_time - process->arrival_time;
                 s->total_response_time += process->start_time - process->arrival_time;
-                printf("moving to finish");
+                // printf("moving to finish");
                 // Move the process to the finished queue
                 queue_push(&s->finished, process);
-                printf("Process %d finished, moved to finished queue\n", pid);
+                // printf("Process %d finished, moved to finished queue\n", pid);
             }
         }
     }

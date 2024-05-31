@@ -18,9 +18,10 @@ void        queue_push(Queue *q, Process *p) {
 	q->tail->next = p;
 	q->tail = p;
     }
+    p->next = NULL;
     q->size++;
     // arrival_time
-
+    p->arrival_time = timestamp();
 }
 
 /**
@@ -95,5 +96,14 @@ void        queue_dump(Queue *q) {
         current = current->next;
     }
 }
-
+Process *queue_get(Queue *q, int index) {
+    if (index < 0 || index >= q->size) {
+        return NULL;
+    }
+    Process *current = q->head;
+    for (int i = 0; i < index; i++) {
+        current = current->next;
+    }
+    return current;
+}
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

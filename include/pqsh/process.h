@@ -21,7 +21,7 @@ struct Process {
     double  arrival_time;       /* Process arrival time (is placed into waiting queue) */
     double  start_time;         /* Process start time (is first placed into running queue) */
     double  end_time;           /* Process end time (is placed into finished queue) */
-
+    int remaining_time_slice;
     Process *next;              /* Pointer to next process */
 };
 
@@ -31,6 +31,7 @@ Process *   process_create(const char *command);
 bool        process_start(Process *p);
 bool        process_pause(Process *p);
 bool        process_resume(Process *p);
+bool        process_is_finished(Process *p);
 
 #endif
 
