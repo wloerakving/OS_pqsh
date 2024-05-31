@@ -6,6 +6,18 @@ Multiple Scheduling Policies: FIFO, Round Robin, and Shortest Job First (SJF). <
 Signal Handling: Custom signal registration and handling. <br>
 Timestamp Recording: Precise process timing and logging. <br>
 Debugging Utilities: Macros for logging and debugging. 
+
+## Running the Scheduler 
+To run the scheduler:<br>
+```bash
+./bin/pqsh 
+```
+To run the test suite: 
+```bash
+make test
+```
+This command will compile and execute the tests located in the tests/ directory. 
+
 ## Directory Structure 
 include/pq/: Header files defining the interface and structures for different components. <br>
 src/: Source files implementing the core functionality of PQSH. <br>
