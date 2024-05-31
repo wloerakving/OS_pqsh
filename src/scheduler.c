@@ -17,7 +17,7 @@ void scheduler_add(Scheduler *s, const char *command) {
 
     Process *process = process_create(command);
     queue_push(&s->waiting, process);
-    process->arrival_time = timestamp(); 
+    // process->arrival_time = timestamp(); 
     printf("Added process \"bin/worksim%s\" to waiting queue.\n", command);
 }
 
