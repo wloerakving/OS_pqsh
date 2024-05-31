@@ -7,11 +7,26 @@ Signal Handling: Custom signal registration and handling. <br>
 Timestamp Recording: Precise process timing and logging. <br>
 Debugging Utilities: Macros for logging and debugging. 
 
-## Running the Scheduler 
+## Getting Started 
+### Prerequisites:
+* GCC (GNU Compiler Collection) <br>
+* Make : Building the Project
+### Building the project:
+1. clone the repository:
+ ```bash
+git clone https://github.com/yourusername/pqsh.git 
+cd pqsh
+```
+2. compile the project:
+```bash
+make
+```
+### Running the Scheduler 
 To run the scheduler:<br>
 ```bash
 ./bin/pqsh 
 ```
+### Testing the Scheduler
 To run the test suite: 
 ```bash
 make test
@@ -23,11 +38,7 @@ include/pq/: Header files defining the interface and structures for different co
 src/: Source files implementing the core functionality of PQSH. <br>
 tests/: Unit tests and scripts to validate the scheduler's functionality. <br>
 bin/: Compiled binaries of the scheduler and test programs. 
-## Getting Started 
-Prerequisites:
-GCC (GNU Compiler Collection) <br>
-Make :
-Building the Project 
+
 ## Components 
 ### Scheduler 
 The scheduler component manages process queues and implements different scheduling policies: 
