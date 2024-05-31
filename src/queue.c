@@ -9,19 +9,15 @@
  * Push process to back of queue.
  * @param q     Pointer to Queue structure.
  **/
-void        queue_push(Queue *q, Process *p) {
-    /* Implement */
+void queue_push(Queue *q, Process *p) {
     if (q->size == 0) {
         q->tail = p;
-	q->head = p;
+        q->head = p;
     } else {
-	q->tail->next = p;
-	q->tail = p;
+        q->tail->next = p;
+        q->tail = p;
     }
-    p->next = NULL;
     q->size++;
-    // arrival_time
-    p->arrival_time = timestamp();
 }
 
 /**
@@ -29,16 +25,15 @@ void        queue_push(Queue *q, Process *p) {
  * @param q     Pointer to Queue structure.
  * @return  Process from front of queue.
  **/
-Process *   queue_pop(Queue *q) {
-    /* Implement */
-	Process * tmp = q->head;
-	if (q->size > 0) {
-            q->head = q->head->next; 
-            q->size--;
-	    return tmp;
-        }	    
-
-        return NULL; // Return NULL if the queue is empty
+Process *queue_pop(Queue *q) {
+    if (q->size == 0) return NULL;
+    Process *tmp = q->head;
+    q->head = q->head->next;
+    if (q->head == NULL) {
+        q->tail = NULL;
+    }
+    q->size--;
+    return tmp;
 }
 
 /**
@@ -47,16 +42,7 @@ Process *   queue_pop(Queue *q) {
  * @param pid   Pid of process to return.
  * @return  Process from Queue with specified pid.
  **/
-Process *   queue_remove(Queue *q, pid_t pid) {
-    // /* Implement */
-    // Process * tmp = q->head;
-    // Process * toremove;
-    // while (tmp->next->pid != pid) {
-    //     continue;
-    // }
-    // toremove = tmp->next;
-    // tmp->next = tmp->next->next;
-    // return toremove;
+Process *queue_remove(Queue *q, pid_t pid) {
     if (q->size == 0) return NULL;
 
     Process *prev = NULL;
@@ -85,25 +71,13 @@ Process *   queue_remove(Queue *q, pid_t pid) {
  * @param q     Queue structure.
  * @param fs    Output file stream.
  **/
-void        queue_dump(Queue *q) {
-    // printf("%6s %-30s %-13s %-13s %-13s\n", 
-    //             "PID", "COMMAND", "ARRIVAL", "START", "END"); 
-    /* TODO Display information for each item in Queue. */
+void queue_dump(Queue *q) {
+    printf("%6s %-30s %-13s %-13s %-13s\n", "PID", "COMMAND", "ARRIVAL", "START", "END");
     Process *current = q->head;
     while (current != NULL) {
         printf("%6d %-30s %-13.6lf %-13.6lf %-13.6lf\n",
-            current->pid, current->command, current->arrival_time, current->start_time, current->end_time);
+               current->pid, current->command, current->arrival_time, current->start_time, current->end_time);
         current = current->next;
     }
-}
-Process *queue_get(Queue *q, int index) {
-    if (index < 0 || index >= q->size) {
-        return NULL;
-    }
-    Process *current = q->head;
-    for (int i = 0; i < index; i++) {
-        current = current->next;
-    }
-    return current;
 }
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

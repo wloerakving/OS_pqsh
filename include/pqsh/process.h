@@ -13,17 +13,17 @@
 
 /* Structure */
 
-typedef struct Process      Process;
+#define MAX_COMMAND_LENGTH 256
 
-struct Process {
-    char    command[BUFSIZ];    /* Command to execute */
-    pid_t   pid;                /* Process identifier (0 == invalid) */
-    double  arrival_time;       /* Process arrival time (is placed into waiting queue) */
-    double  start_time;         /* Process start time (is first placed into running queue) */
-    double  end_time;           /* Process end time (is placed into finished queue) */
+typedef struct Process {
+    pid_t pid;
+    char command[MAX_COMMAND_LENGTH];
+    double start_time;
+    double arrival_time;
+    double end_time;
     int remaining_time_slice;
-    Process *next;              /* Pointer to next process */
-};
+    struct Process *next;  // Pointer to the next process in the queue
+} Process;
 
 /* Functions */
 

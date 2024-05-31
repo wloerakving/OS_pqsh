@@ -16,34 +16,40 @@
  * @param   command     String with command to execute.
  * @return  Pointer to new process structure
  **/
+
 Process *process_create(const char *command) {
-    // Alocate memory for a new process structure
+    // Allocate memory for a new process structure
     Process *p = (Process *)malloc(sizeof(Process));
     if (!p) {
         perror("Malloc failed!");
-	return NULL;
+        return NULL;
     }
-    // Duplicated the command string and store it in the process structre
-    strcpy(p->command, command);
-    // Fork a new process from parrent process
+    // Duplicate the command string and store it in the process structure
+    strncpy(p->command, command, MAX_COMMAND_LENGTH - 1);
+    p->command[MAX_COMMAND_LENGTH - 1] = '\0';  // Ensure null-termination
+
+    // Fork a new process from parent process
     pid_t pid = fork();
     if (pid < 0) {
-        perror("Error occured, fork failed!");
-	free(p);
-	return NULL;
-    } 
-    else if (!pid) {
+        perror("Error occurred, fork failed!");
+        free(p);
+        return NULL;
+    } else if (pid == 0) {
+        // Child process
         char *argv[MAX_ARGUMENTS] = {0};
-	int i = 0;
-	for (char *token = strtok(command, " "); token; token = strtok(NULL, " "))
-	    argv[i++] = token;
+        int i = 0;
+        char command_copy[MAX_COMMAND_LENGTH];
+        strncpy(command_copy, command, MAX_COMMAND_LENGTH);
+        for (char *token = strtok(command_copy, " "); token; token = strtok(NULL, " "))
+            argv[i++] = token;
         execvp(argv[0], argv);
-	perror("Execvp failed!");
-	exit(EXIT_FAILURE);
-    } 
-    else {
-	p->pid = pid;
-        timestamp();
+        perror("Execvp failed!");
+        exit(EXIT_FAILURE);
+    } else {
+        // Parent process
+        p->pid = pid;
+        p->remaining_time_slice = 0;
+        p->arrival_time = timestamp();
     }
     return p;
 }
@@ -54,10 +60,8 @@ Process *process_create(const char *command) {
  * @return  Whether or not starting the process was successful
  **/
 bool process_start(Process *p) {
-    /* TODO: Implement */
     p->start_time = timestamp();
     return kill(p->pid, SIGCONT) == 0;
-    // return false;
 }
 
 /**
@@ -66,9 +70,7 @@ bool process_start(Process *p) {
  * @return  Whether or not sending the signal was successful.
  **/
 bool process_pause(Process *p) {
-    /* TODO: Implement */
     return kill(p->pid, SIGSTOP) == 0;
-    // return false;
 }
 
 /**
@@ -77,23 +79,26 @@ bool process_pause(Process *p) {
  * @return  Whether or not sending the signal was successful.
  **/
 bool process_resume(Process *p) {
-    /* TODO: Implement */
     return kill(p->pid, SIGCONT) == 0;
-    // return false;
 }
+
+/**
+ * Check if a process has finished.
+ * @param   p           Pointer to Process structure.
+ * @return  Whether or not the process has finished
+ **/
 bool process_is_finished(Process *p) {
     int status;
     pid_t result = waitpid(p->pid, &status, WNOHANG);
     if (result == 0) {
-        // Process is still running
-        return false;
+        return false;  // Process is still running
     } else if (result == -1) {
-        // Error occurred
         perror("waitpid");
         return false;
     } else {
-        // Process has finished
-        return true;
+        p->end_time = timestamp();
+        return true;  // Process has finished
     }
 }
+
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */

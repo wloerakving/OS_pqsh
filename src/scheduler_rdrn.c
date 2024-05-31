@@ -20,49 +20,32 @@
  **/
 #define TIME_QUANTUM 4
 void scheduler_rdrn(Scheduler *s) {
-    /* TODO: Implement Round Robin Policy */
-    // Process the running queue
-    for (int i = 0; i < s->running.size; i++) {
-        Process *current = queue_get(&s->running, i);
+    while (((&s->waiting)->size) > 0 || ((&s->running)->size) > 0) {
+        Process *process = queue_pop(&s->waiting);
+        if (process) {
+            process_start(process);
+            process->start_time = timestamp();
+            queue_push(&s->running, process);
+        }
 
-        // Check if the process has finished its current time slice
-        if (current->remaining_time_slice == 0) {
-            // Preempt the process
-            process_pause(current);
-
-            // Put it back into the waiting queue if it hasn't finished execution
-            if (!process_is_finished(current)) {
-                queue_push(&s->waiting, current);
+        for (int i = 0; i < ((&s->running)->size); i++) {
+            process = queue_pop(&s->running);
+            if (process->remaining_time_slice > 0) {
+                process_resume(process);
+                sleep(TIME_QUANTUM);
+                process_pause(process);
+                process->remaining_time_slice -= TIME_QUANTUM;
             }
 
-            // Remove it from the running queue
-            queue_remove(&s->running, current->pid);
-            i--;  // Adjust index due to removal
-        }
-    }
-
-    // Fill the running queue if there are free cores and waiting processes
-    while (s->running.size < s->cores && s->waiting.size > 0) {
-        Process *poped = queue_pop(&s->waiting);
-        if (poped) {
-            // Resume the process if it was paused
-            if (poped->remaining_time_slice < TIME_QUANTUM) {
-                process_resume(poped);
+            if (process_is_finished(process)) {
+                process->end_time = timestamp();
+                s->total_turnaround_time += process->end_time - process->arrival_time;
+                s->total_response_time += process->start_time - process->arrival_time;
+                free(process);
             } else {
-                process_start(poped);
+                queue_push(&s->running, process);
             }
-
-            // Set the initial or remaining time slice for the process
-            poped->remaining_time_slice = TIME_QUANTUM;
-
-            queue_push(&s->running, poped);
         }
-    }
-
-    // Decrease the remaining time slice for all running processes
-    for (int i = 0; i < s->running.size; i++) {
-        Process *current = queue_get(&s->running, i);
-        current->remaining_time_slice--;
     }
 }
 
