@@ -16,7 +16,8 @@
 void scheduler_add(Scheduler *s, const char *command) {
 
     Process *process = process_create(command);
-    queue_push(&s->waiting, process);    
+    queue_push(&s->waiting, process);
+    process->arrival_time = timestamp(); 
     printf("Added process \"bin/worksim%s\" to waiting queue.\n", command);
 }
 
@@ -27,6 +28,10 @@ void scheduler_add(Scheduler *s, const char *command) {
  * @param   queue   Bitmask specifying which queues to display.
  **/
 void scheduler_status(Scheduler *s, int queue) {
+    // Display overall metrics
+    printf("Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n\n\n",
+        s->running.size, s->waiting.size, s->finished.size, s->total_turnaround_time, s->total_response_time);
+
     if (queue & RUNNING) {
         printf("Running Queue:\n");
         queue_dump(&s->running);
@@ -39,13 +44,6 @@ void scheduler_status(Scheduler *s, int queue) {
         printf("Finished Queue:\n");
         queue_dump(&s->finished);
     }
-
-    // Display overall metrics
-    printf("Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n",
-        s->running.size, s->waiting.size, s->finished.size, s->total_turnaround_time, s->total_response_time);
-    // printf("Running = %4lu, Waiting = %4lu, Finished = %4lu, Turnaround = %05.2lf, Response = %05.2lf\n",
-	// 	    0, s->waiting.size, 0, 0.0, 0.0);
-    /* TODO: Complement implementation. */
 }
 
 /**
@@ -74,7 +72,7 @@ void scheduler_next(Scheduler *s) {
  * @param   s	    Pointer to Scheduler structure.
  **/
 void scheduler_wait(Scheduler *s) {
-    /* TODO: Wait for any children without blocking:
+    /* Wait for any children without blocking:
      *
      *  - Remove process from queues.
      *  - Update Process metrics.

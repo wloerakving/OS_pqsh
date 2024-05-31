@@ -9,7 +9,7 @@
  * Push process to back of queue.
  * @param q     Pointer to Queue structure.
  **/
-void queue_push(Queue *q, Process *p) {
+void        queue_push(Queue *q, Process *p) {
     if (q->size == 0) {
         q->tail = p;
         q->head = p;
@@ -42,7 +42,7 @@ Process *queue_pop(Queue *q) {
  * @param pid   Pid of process to return.
  * @return  Process from Queue with specified pid.
  **/
-Process *queue_remove(Queue *q, pid_t pid) {
+Process *   queue_remove(Queue *q, pid_t pid) {
     if (q->size == 0) return NULL;
 
     Process *prev = NULL;
@@ -71,13 +71,16 @@ Process *queue_remove(Queue *q, pid_t pid) {
  * @param q     Queue structure.
  * @param fs    Output file stream.
  **/
-void queue_dump(Queue *q) {
-    printf("%6s %-30s %-13s %-13s %-13s\n", "PID", "COMMAND", "ARRIVAL", "START", "END");
+void        queue_dump(Queue *q) {
+    /* Display information for each item in Queue. */
     Process *current = q->head;
     while (current != NULL) {
+
+        printf("%6s %-30s %-18.6s %-8.6s %13.6s\n", "PID", " COMMAND", "ARRIVAL", "START", "END");
         printf("%6d %-30s %-13.6lf %-13.6lf %-13.6lf\n",
-               current->pid, current->command, current->arrival_time, current->start_time, current->end_time);
-        current = current->next;
+            current->pid, current->command, current->arrival_time, current->start_time, current->end_time);
+        
+	current = current->next;
     }
 }
 /* vim: set expandtab sts=4 sw=4 ts=8 ft=c: */
