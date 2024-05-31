@@ -69,3 +69,5 @@ The tests/ directory contains unit tests and scripts to validate the functionali
 The tests ensure that each component works correctly and that the scheduling policies produce the expected results. 
 
 ## Example result
+![Alt](https://github.com/wloerakving/OS_pqsh/blob/master/images/result1.png)
+![Alt](https://github.com/wloerakving/OS_pqsh/blob/master/images/result2.png)
